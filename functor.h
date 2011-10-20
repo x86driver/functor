@@ -16,7 +16,9 @@ private:
     typedef FunctorImpl<R, Parm1> Impl;
 public:
     Functor();
-    template <class Fun> Functor(const Fun &fun);
+    ~Functor() { if (impl) delete impl; }
+    template <class Fun> Functor(const Fun fun);
+    Functor(const Functor &);
     Functor& operator=(const Functor &);
 //    explicit Functor(Impl *impl);
     R operator()(Parm1 p1) {
