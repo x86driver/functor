@@ -1,5 +1,5 @@
 TARGET=functor
-CFLAGS = -Wall -Wextra -Weffc++ -g
+CFLAGS = -Wall -Wextra -Weffc++ -g -std=c++0x
 
 all:$(TARGET)
 
