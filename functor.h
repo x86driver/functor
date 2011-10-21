@@ -19,7 +19,8 @@ public:
     {
         return fun_(args...);
     }
-    FunctorHandler *clone() const {
+    FunctorHandler *clone() const
+    {
         return new FunctorHandler(*this);
     }
 private:
@@ -31,24 +32,34 @@ class Functor;
 
 template <typename R, typename... Args>
 class Functor<R (Args...)> {
-private:
-    typedef FunctorImpl<R, Args...> Impl;
-    Impl *impl;
 public:
-    Functor();
+
     ~Functor() { if (impl) delete impl; }
+
     template <class Fun> Functor(const Fun fun)
-        : impl(new FunctorHandler<Fun, R, Args...>(fun)) {}
-    Functor(const Functor &f) : impl(f.impl->clone()) {}
-    Functor& operator=(const Functor &f) {
+        : impl(new FunctorHandler<Fun, R, Args...>(fun))
+    {}
+
+    Functor(const Functor &f)
+        : impl(f.impl->clone())
+    {}
+
+    Functor& operator=(const Functor &f)
+    {
         if (impl)
             delete impl;
         impl = f.impl->clone();
         return *this;
     }
-    R operator()(Args... args) {
+
+    R operator()(Args... args)
+    {
         return (*impl)(args...);
     }
+
+private:
+    Functor();
+    FunctorImpl<R, Args...> *impl;
 };
 
 #endif
