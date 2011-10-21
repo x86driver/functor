@@ -52,5 +52,10 @@ int main()
     cmd2(5);
 
     printf("return: %d\n", cmd3(true, 123.45));
+
+    auto cmd5 = cmd1;
+    cmd5 = cmd2;
+    cmd5(10);
+
     return 0;
 }

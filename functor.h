@@ -40,7 +40,12 @@ public:
     template <class Fun> Functor(const Fun fun)
         : impl(new FunctorHandler<Fun, R, Args...>(fun)) {}
     Functor(const Functor &f) : impl(f.impl->clone()) {}
-    Functor& operator=(const Functor &);
+    Functor& operator=(const Functor &f) {
+        if (impl)
+            delete impl;
+        impl = f.impl->clone();
+        return *this;
+    }
     R operator()(Args... args) {
         return (*impl)(args...);
     }
