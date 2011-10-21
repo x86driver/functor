@@ -1,15 +1,6 @@
 #include <stdio.h>
 #include "functor.h"
 
-#if 0
-template <typename R, typename Parm1>
-template <class Fun>
-Functor<R, Parm1>::Functor(const Fun fun)
-    : impl(new FunctorHandler<Functor, Fun>(fun))
-{
-}
-#endif
-
 struct TestFunctor {
     void operator()(int i) {
         printf("%s: %d\n", __FUNCTION__, i);
@@ -30,12 +21,32 @@ int three(bool visible, double a)
     return 10;
 }
 
+class Button {
+public:
+    Button(Functor<void (void)> &func) : func(func) {}
+    void clicked() { func(); }
+    void setClicked(Functor<void (void)> func) {
+        this->func = func;
+    }
+private:
+    Functor<void (void)> func;
+};
+
+void nofunc()
+{
+    printf("I'm in nofunc!\n");
+}
+
 int main()
 {
     TestFunctor f;
     Functor<void (int)> cmd1(myFunction);
     Functor<void (int)> cmd2(f);
     Functor<int (bool, double)> cmd3(three);
+    Functor<void (void)> cmd4(nofunc);
+
+    Button btn(cmd4);
+    btn.clicked();
 
     cmd1(4);
     cmd2(5);

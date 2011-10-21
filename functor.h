@@ -6,6 +6,7 @@ class FunctorImpl
 {
 public:
     virtual R operator()(Args...) = 0;
+    virtual FunctorImpl *clone() const = 0;
     virtual ~FunctorImpl() {}
 };
 
@@ -17,6 +18,9 @@ public:
     R operator()(Args... args)
     {
         return fun_(args...);
+    }
+    FunctorHandler *clone() const {
+        return new FunctorHandler(*this);
     }
 private:
     Fun fun_;
@@ -35,7 +39,7 @@ public:
     ~Functor() { if (impl) delete impl; }
     template <class Fun> Functor(const Fun fun)
         : impl(new FunctorHandler<Fun, R, Args...>(fun)) {}
-    Functor(const Functor &);
+    Functor(const Functor &f) : impl(f.impl->clone()) {}
     Functor& operator=(const Functor &);
     R operator()(Args... args) {
         return (*impl)(args...);
