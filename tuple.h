@@ -35,11 +35,10 @@
 # include <c++0x_warning.h>
 #else
 
-//#include <utility>
+#include <cstdlib>
 
 namespace std
 {
-  typedef unsigned int size_t;
   // Adds a const reference to a non-reference type.
   template<typename _Tp>
     struct __add_c_ref

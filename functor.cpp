@@ -24,8 +24,6 @@ int three(bool visible, double a)
 
 class Button {
 public:
-//    typedef std::tuple<void (void)> callback_tuple;
-//    typedef std::tuple_element<0, callback_tuple>::type CallbackType;
     typedef std::tuple_element<0, std::tuple<void (void)> >::type CallbackType;
     Button(Functor<CallbackType> &func) : func(func) {}
     void clicked() { func(); }
