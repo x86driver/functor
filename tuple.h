@@ -35,10 +35,9 @@
 # include <c++0x_warning.h>
 #else
 
-#include <cstdlib>
-
 namespace std
 {
+  typedef ::size_t size_t;
   // Adds a const reference to a non-reference type.
   template<typename _Tp>
     struct __add_c_ref
