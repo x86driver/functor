@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <tuple>
 #include "functor.h"
 
 struct TestFunctor {
@@ -23,18 +24,41 @@ int three(bool visible, double a)
 
 class Button {
 public:
-    Button(Functor<void (void)> &func) : func(func) {}
+    typedef std::tuple<void (void)> callback_tuple;
+    typedef std::tuple_element<0, callback_tuple>::type CallbackType;
+    Button(Functor<CallbackType> &func) : func(func) {}
     void clicked() { func(); }
-    void setClicked(Functor<void (void)> &func) {
+    void setClicked(Functor<CallbackType> &func) {
         this->func = func;
     }
 private:
-    Functor<void (void)> func;
+    Functor<CallbackType> func;
 };
 
 void nofunc()
 {
     printf("I'm in nofunc!\n");
+}
+
+template<typename T, typename U>
+auto myFunc( T& t, U& u)-> decltype( t + u ){
+
+  return t + u;
+
+};
+
+template <typename Signature>
+class NoCommand;
+
+template <typename R, typename... Args>
+class NoCommand<R (Args...)> {
+public:
+    R operator()(Args...) {
+    }
+};
+
+void abc()
+{
 }
 
 int main()
