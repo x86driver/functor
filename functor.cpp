@@ -25,7 +25,7 @@ class Button {
 public:
     Button(Functor<void (void)> &func) : func(func) {}
     void clicked() { func(); }
-    void setClicked(Functor<void (void)> func) {
+    void setClicked(Functor<void (void)> &func) {
         this->func = func;
     }
 private:
