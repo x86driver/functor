@@ -17,8 +17,7 @@ public:
     explicit FunctorHandler(const Fun &fun) : fun_(fun) {}
     R operator()(Args... args) const
     {
-        auto f = fun_;
-        return f(args...);
+        return ((Fun&)fun_)(args...);
     }
     FunctorHandler *clone() const
     {

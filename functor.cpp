@@ -6,6 +6,7 @@ struct TestFunctor {
     TestFunctor() : count(0) {}
     void operator()(int i) {
         printf("%s: %d, count: %d\n", __FUNCTION__, i, count);
+        ++count;
     }
     void set(int x) { count = x; }
     int count;
@@ -64,6 +65,19 @@ void abc()
 }
 
 int main()
+{
+    TestFunctor f;
+    Functor<void (int)> cmd1(f);
+
+    auto cmd2 = cmd1;
+
+    f.set(10);
+
+    cmd1(0);
+    cmd2(0);
+}
+
+int main2()
 {
     TestFunctor f;
     Functor<void (int)> cmd1(myFunction);
