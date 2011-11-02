@@ -85,5 +85,13 @@ int main()
 
     f.set(100);
     cmd2(9);
+
+    TestFunctor *myfunc = new TestFunctor;
+    Functor<void (int)> mycmd(myfunc);
+    mycmd(3);
+    myfunc->set(7);
+    mycmd(4);
+    delete myfunc;
+
     return 0;
 }

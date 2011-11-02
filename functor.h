@@ -17,7 +17,8 @@ public:
     explicit FunctorHandler(const Fun &fun) : fun_(fun) {}
     R operator()(Args... args) const
     {
-        return ((Fun&)fun_)(args...);
+        auto f = fun_;
+        return f(args...);
     }
     FunctorHandler *clone() const
     {
@@ -25,6 +26,23 @@ public:
     }
 private:
     const Fun &fun_;
+};
+
+template <typename Fun, typename R, typename... Args>
+class FunctorHandler<Fun*, R, Args...> : public FunctorImpl<R, Args...>
+{
+public:
+    explicit FunctorHandler(const Fun *fun) : fun_(fun) {}
+    R operator()(Args... args) const
+    {
+        return (const_cast<Fun*>(fun_))->operator()(args...);
+    }
+    FunctorHandler *clone() const
+    {
+        return new FunctorHandler(*this);
+    }
+private:
+    const Fun *fun_;
 };
 
 template <typename Signature>
@@ -38,6 +56,10 @@ public:
 
     template <class Fun> Functor(const Fun &fun)
         : impl(new FunctorHandler<Fun, R, Args...>(fun))
+    {}
+
+    template <class Fun> Functor(const Fun *fun)
+        : impl(new FunctorHandler<Fun*, R, Args...>(fun))
     {}
 
     Functor(const Functor &f)
