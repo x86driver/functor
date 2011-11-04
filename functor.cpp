@@ -60,11 +60,17 @@ public:
     }
 };
 
-void abc()
-{
-}
+class Parrot {
+public:
+    void Eat() {
+        printf("Parrot eat!\n");
+    }
+    void Speak() {
+        printf("Parrot speak!\n");
+    }
+};
 
-int main()
+int main2()
 {
     TestFunctor f;
     Functor<void (int)> cmd1(f);
@@ -75,9 +81,11 @@ int main()
 
     cmd1(0);
     cmd2(0);
+
+    return 0;
 }
 
-int main2()
+int main()
 {
     TestFunctor f;
     Functor<void (int)> cmd1(myFunction);
@@ -106,6 +114,10 @@ int main2()
     myfunc->set(7);
     mycmd(4);
     delete myfunc;
+
+    Parrot geronimo;
+    Functor<void (void)> cmd_parrot1(&geronimo, &Parrot::Eat);
+    cmd_parrot1();
 
     return 0;
 }
